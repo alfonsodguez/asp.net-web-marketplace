@@ -1,0 +1,26 @@
+﻿<div class="container" style="background-color: gray;">
+    <div class="row">
+        <table class="table">
+            <thead style="background-color: orange;">
+                <tr>
+                    <th scope="col">EAN</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Detalle del producto</th>
+                    <th scope="col">Precio €</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Añadir Cesta</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (Producto producto in Model)
+                {
+                    <partial name="_VistaParcialProductoCantidad" model="producto" />
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<script src="~/js/botonMas.js"></script>
+<script src="~/js/botonMenos.js"></script>
+
+

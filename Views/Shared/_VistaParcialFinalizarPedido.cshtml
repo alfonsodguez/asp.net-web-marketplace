@@ -1,0 +1,9 @@
+﻿@model ItemPedido
+<tr>
+    <td>@Model.ProductoPedido.Nombre</td>
+    <td><a href="https://localhost:44329/Tienda/MostrarProducto/@Model.ProductoPedido.EAN" class="btn btn-outline-danger btn-sm">Detalle del producto</a></td>
+    <td>
+        @Model.CantidadPedido
+    </td>
+    <td>@Model.ProductoPedido.Precio</td>
+</tr>

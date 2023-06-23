@@ -1,0 +1,23 @@
+﻿@model ItemPedido
+<tr>
+    <td>@Model.ProductoPedido.EAN / @Model.ProductoPedido.Nombre</td>
+    <td>
+        <a asp-controller="Pedido" 
+           asp-action="RestarCantidad"
+           asp-all-route-data="@(new Dictionary<String, String> { { "ean", Model.ProductoPedido.EAN} })"
+           class="btn btn-primary" id="botonMenos-@Model.ProductoPedido.EAN"> - </a>
+        <label id="EAN-@Model.ProductoPedido.EAN">@Model.CantidadPedido</label>
+        <a asp-controller="Pedido" 
+           asp-action="SumarCantidad"
+           asp-all-route-data="@(new Dictionary<String, String> { { "ean", Model.ProductoPedido.EAN } })"
+           class="btn btn-primary" id="botonMas-@Model.ProductoPedido.EAN"> + </a>
+    </td>
+    <td>@Model.ProductoPedido.Precio</td>
+    <td>
+        <a asp-controller="Pedido"
+           asp-action="EliminarProductoCesta"
+           asp-all-route-data="@(new Dictionary<String, String> { { "ean", Model.ProductoPedido.EAN} })">
+            <strong>X</strong>
+        </a>
+    </td>
+</tr>

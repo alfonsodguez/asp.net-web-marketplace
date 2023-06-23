@@ -1,0 +1,309 @@
+﻿@model Cliente
+@{Layout = null;}
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Registro</title>
+    <!-- estilos y librerias .js bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+</head>
+<body style="background-color: #006633;">
+    <div class="container-fluid">
+        <div class="row" style="height:100px;"></div>
+        <div class="row">
+            <div class="col">
+                <img src="~/images/formHeaderRegistro.png">
+            </div>
+        </div>
+        <div class="row" style="background-color: #FFFFee;">
+            <div class="col-8">
+                <form>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="inputNombre"><strong>*Nombre:</strong></label>
+                                <input type="text" class="form-control" id="inputNombre" asp-for="@Model.Nombre">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputPrimApe"><strong>Primer Apellido:</strong></label>
+                                <input type="text" class="form-control" id="inputPrimApe" asp-for="@Model.PrimerApellido">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputSecApe"><strong>Segundo Apellido:</strong></label>
+                                <input type="text" class="form-control" id="inputSecApe" asp-for="@Model.SegundoApellido">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="dropdownTipoIdentif"><strong>Tipo Identificacion:</strong></label>
+                                <select class="form-control" id="dropdownTipoIdentif" asp-for="@Model.TipoIdentificacionCliente.TipoId">
+                                    <option selected value="NIF">NIF</option>
+                                    <option value="CIF">CIF</option>
+                                    <option value="Pasaporte">Pasaporte</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputIdentif"><strong>*Nº Identificacion:</strong></label>
+                                <input type="text" class="form-control" id="inputIdentif" asp-for="@Model.TipoIdentificacionCliente.NumeroId">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                    <label class="form-check-label" for="exampleCheck1">Deseo recibir informacion comercial</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="inputEmail"><strong>*Email/Usuario de acceso:</strong></label>
+                                <input type="email" class="form-control" id="inputEmail" asp-for="@Model.CredencialesCliente.Email">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputConfEmail"><strong>*Confirmacion Email:</strong></label>
+                                <input type="email" class="form-control" id="inputConfEmail" name="inputConfEmail">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputFecha"><strong>*Fecha de nacimiento:</strong></label>
+                                <input type="date" class="form-control" id="inputFecha" asp-for="@Model.FechaNacimiento" value="2021-11-18" min="1921-01-01" max="2021-12-31">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="inputPassword"><strong>*Contraseña:</strong></label>
+                                <input type="password" class="form-control" id="inputPassword" asp-for="@Model.CredencialesCliente.Password">
+                            </div>
+                            <div class="form-group col-md-4">
+                                <label for="inputRePassword"><strong>*Confirmacion de contraseña:</strong></label>
+                                <input type="password" class="form-control" id="inputRePassword">
+                            </div>
+                            <div class="form-group col-md-4">
+                            </div>
+                        </div>
+                        <div class="row" style="height: 10px;"></div>
+                        <div style="border:0.1em solid #ff9900;padding-top: 5px; padding-bottom: 5px; background-color:#ffffcc">
+                            <div class="row">
+                                <div class="col-md-2"><label><strong>*Direccion/es:</strong></label></div>
+                                <div class="col-md-4">
+                                    <select id="direcciones" class="form-control">
+                                        <option selected>No se han definido direcciones</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <button type="button" id="botonAltaDirec" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="exampleModalLabel">ALTA</button>
+                                    <!-- ========================== Formulario modal alta direcciones ========================== -->
+                                    <div class="modal fade" id="formAltaDirec" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <img src="~/images/formHeaderAltaDireccion.png">
+                                                </div>
+                                                <div class="modal-body" style="background-color: #FFFFee;">
+                                                    <div id="altaDireccion">
+                                                        <div class="row">
+                                                            <div class="form-group col-2">
+                                                                <label for="inputTipoVia" class="form-label"><strong>Tipo de via:</strong></label>
+                                                                <select class="form-control" id="inputTipoVia" name="tipoVia">
+                                                                    <option selected>Calle</option>
+                                                                    <option value="avenida">Avenida</option>
+                                                                    <option value="plaza">Plaza</option>
+                                                                    <option value="carretera/autovia">Carretera/Autovia</option>
+                                                                    <option value="poligono">Poligono</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-4">
+                                                                <label for="inputNombreVia" class="form-label"><strong>*Nombre via:</strong></label>
+                                                                <input type="text" class="form-control" id="inputNombreVia" name="nombreVia">
+                                                            </div>
+                                                            <div class="form-group col-3">
+                                                                <label for="inputNumVia" class="form-label"><strong>Nº/Km:</strong></label>
+                                                                <input type="text" class="form-control" id="inputNumVia" name="numeroVia">
+                                                            </div>
+                                                            <div class="form-group col-3">
+                                                                <label for="inputPiso" class="form-label"><strong>Piso:</strong></label>
+                                                                <input type="text" class="form-control" id="inputPiso" name="piso">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-2">
+                                                                <label for="inputPuerta" class="form-label"><strong>Puerta:</strong></label>
+                                                                <input type="text" class="form-control" id="inputPuerta" name="puerta">
+                                                            </div>
+                                                            <div class="form-group col-4">
+                                                                <label for="inputBloque" class="form-label"><strong>Bloque:</strong></label>
+                                                                <input type="text" class="form-control" id="inputBloque" name="bloque">
+                                                            </div>
+                                                            <div class="form-group col-3">
+                                                                <label for="inputEscalera" class="form-label"><strong>Escalera:</strong></label>
+                                                                <input type="text" class="form-control" id="inputEscalera" name="escalera">
+                                                            </div>
+                                                            <div class="form-group col-3">
+                                                                <label for="inputUrbanizacion" class="form-label"><strong>Urbanizacion/Poligono:</strong></label>
+                                                                <input type="text" class="form-control" id="inputUrbanizacion" name="urbanizacion">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-12">
+                                                                <label for="inputObsevaciones" class="form-label"><strong>Observaciones(Texto de ayuda para localizar la direccion):</strong></label>
+                                                                <input type="text" id="inputObservaciones" class="form-control" name="observaciones">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-4">
+                                                                <label for="inputProvincia" class="form-label"><strong>Provincia</strong></label>
+                                                                <select id="inputProvincia" name="codpro" class="form-control">
+                                                                    <option value="0" selected>Elige provincia...</option>
+                                                                    @{
+                                                                        foreach (Provincia provincia in ViewData["ListaProvincias"] as List<Provincia>)
+                                                                        {
+                                                                            <option value="@provincia.CodProvincia">@provincia.Nombre</option>
+                                                                        }
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-6">
+                                                                <label for="inputLocalidad" class="form-label"><strong>Localidad</strong></label>
+                                                                <select id="inputLocalidad" name="codmun" class="form-control" disabled>
+                                                                    <option value="0" selected>Elige localidad...</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="form-group col-2">
+                                                                <label for="inputCP" class="form-label"><strong>Codigo Postal:</strong></label>
+                                                                <input type="text" name="cp" class="form-control" id="inputCP">
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-3">
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" id="inputEsPrincipal" name="esprincipal">
+                                                                    <label class="form-check-label" for="inputEsPrincipal">¿Es direccion de entrega habitual?</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-9"></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6"></div>
+                                                            <div class="col-6">
+                                                                <button type="button" id="botonAceptarDirec" class="btn btn-outline-success" data-dismiss="modal">ACEPTAR</button>
+                                                                <button type="button" id="botonCierraModal" class="btn btn-outline-secondary">CANCELAR</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ======================================================================================== -->
+                                    <button type="button" id="botonModificarDirec" class="btn btn-outline-success">MODIFICAR</button>
+                                    <button type="button" id="botonBorrarDirec" class="btn btn-outline-success">BORRAR</button>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-2"><label><strong>*Telefonos:</strong></label></div>
+                                <div class="col-md-4">
+                                    <select id="telefonos" class="form-control">
+                                        <option selected>No se han definido telefonos</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <button type="button" id="botonAltaTelef" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="exampleModalTelef">ALTA</button>
+                                    <!-- ========================== Formulario modal alta telefonos ========================== -->
+                                    <div class="modal fade" id="formAltaTelef" tabindex="-1" role="dialog" aria-labelledby="exampleModalTelef" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <img src="~/images/formHeaderAltaTelefono.png">
+                                                </div>
+                                                <div class="modal-body" style="background-color: #FFFFee;">
+                                                    <div id="altaTelefono">
+                                                        <div class="row">
+
+                                                            <div class="form-group col-6">
+                                                                <label for="inputTelefono" class="form-label"><strong>*Telefono:</strong></label>
+                                                                <input type="text" class="form-control" id="inputTelefono" name="numeroTlfno">
+                                                            </div>
+                                                            <div class="col-6"></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="form-group col-3">
+                                                                <div class="form-check">
+                                                                    <input type="checkbox" class="form-check-input" id="esTlfnoprincipal" name="esTlfnoprincipal">
+                                                                    <label class="form-check-label" for="esprincipal">¿Es telefono habitual?</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-9"></div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-6"></div>
+                                                            <div class="col-6">
+                                                                <button type="button" class="btn btn-outline-success" data-dismiss="modal" id="botonAceptarTlfno">ACEPTAR</button>
+                                                                <button type="button" id="botonCierraModalTlfno" class="btn btn-outline-secondary">CANCELAR</button>
+                                                            </div>
+                                                        </div>
+                                                    </div> 
+                                                </div>
+                                                <div class="modal-footer">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- ======================================================================================== -->
+                                    <button type="button" id="botonModififcarTelef" class="btn btn-outline-success">MODIFICAR</button>
+                                    <button type="button" id="botonBorrarTelef" class="btn btn-outline-success">BORRAR</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- ========================================================================================================================= -->
+                        <div class="row">
+                            <div class="form-group col-md-2">
+                                <label for="dropdownFaltaProducto"><strong>En caso de falta de producto:</strong></label>
+                                <select class="form-control" id="dropdownFaltaProducto">
+                                    <option selected>Elija una opcion</option>
+                                    <option>Sustituir por similar</option>
+                                    <option>No servir</option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4"></div>
+                            <div class="form-group col-md-6">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" id="checkPolitica">
+                                    <label class="form-check-label" for="checkPolitica">Acepto las condiciones generales y politica de confidencialidad</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-9"></div>
+                            <div class="form-group col-3">
+                                <button type="submit" id="btnEnviarAlta" class="btn btn-outline-success">ENVIAR ALTA</button>
+                                <button type="button" class="btn btn-outline-secondary" onclick="javascript:window.location='https://localhost:44329/Cliente/Login'">CERRAR</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col-4"></div>
+        </div>
+    </div>
+    <script>
+        // variables globales
+        let esDireccionModif = false
+        let esTlfnModif = false
+        let posDireccionModif = 0
+        let posTlfnModif = 0
+    </script>
+    <script src="~/js/modalRegistro.js"></script>
+    <script src="~/js/dropdownMunicipios.js"></script>
+    <script src="~/js/validarFormRegistro.js"></script>
+    <script src="~/js/añadirDireccionTlfn.js"></script>
+    <script src="~/js/modificarDireccionTlfn.js"></script>
+    <script src="~/js/envioFormRegistro.js"></script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Http
+@using System.Text.Json
+@model KeyValuePair<String, Direccion>
+@{Cliente cliente = JsonSerializer.Deserialize<Cliente>(Context.Session.GetString("sessionCliente"));}
+<div class="card">
+    <div class="card-header">
+        <nav class="navbar navbar-ligth bg-light">
+            <span class="navbar-text"> @Model.Key </span>
+            <ul class="nav justify-content-end nav-pills  card-header-pills">
+                <li class="nav-item"><a class="nav-link">ELIMINAR</a></li>
+            </ul>
+            <button type="button" class="btn btn-outline-dark">MODIFICAR</button>
+        </nav>
+    </div>
+    <div class="row g-0">
+        <div class="col-md-8">
+            <div class="card border-light">
+                <div class="card-body">
+                    <p class="card-text">@Model.Value.TipoVia @Model.Value.NombreVia </p>
+                    <p class="card-text">Bloque/Edificio: @Model.Value.Bloque Escalera: @Model.Value.Escalera </p>
+                    <p class="card-text">Piso: @Model.Value.Piso Puerta: @Model.Value.Puerta </p>
+                    <hr />
+                    <p class="card-text"><span class="text-muted">Informacion adicional</span></p>
+                    <p class="card-text">@Model.Value.Municipio.Nombre CP: @Model.Value.CP </p>
+                    <p class="card-text">(@Model.Value.Provincia.Nombre)</p>
+                    @if (Model.Value.EsPrincipal)
+                    {
+                        <img src="/images/pillow_Direccion_EsPrincipal.png" />
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-light">
+                <div class="card-body">
+                    <h5 class="card-text">PERSONA DE CONTACTO</h5>
+                    <p class="card-text">Nombre: @cliente.Nombre   Apellidos: @cliente.PrimerApellido @cliente.SegundoApellido</p>
+                    <h5 class="card-text">TELEFONO</h5>
+                    <p class="card-text">Habitual: @(cliente.Telefonos.Where( (KeyValuePair<String, Telefono> item)=> item.Value.EsPrincipal ==true ).Select(item => item.Key).Single<String>())</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

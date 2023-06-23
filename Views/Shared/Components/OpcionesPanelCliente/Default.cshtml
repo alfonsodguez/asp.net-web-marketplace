@@ -1,0 +1,10 @@
+﻿<div class="list-group justify-content-around align-items-start">
+    @foreach (String opcion in Model)
+    {
+        <a asp-action="@opcion.Split(':')[1].ToString()"
+           asp-controller="Cliente"
+           class="list-group-item list-group-item-action" style="background-color: #006633; color: #FFFFee;">
+            @opcion.Split(':')[0].ToString()
+        </a>
+    }
+</div>

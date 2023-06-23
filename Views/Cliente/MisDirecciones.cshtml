@@ -1,0 +1,127 @@
+﻿@model Dictionary<String, Direccion>
+<div class="container">
+    <div class="row">
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <h3 class="display-4">Direcciones de envio y facturacion</h3>
+                <p class="lead">
+                    Estas son las direcciones de envio a las que puedes hacer tus envios. Elige la que usaras por defecto donde llegaran tus pedidos
+                    (direccion principal) Las direcciones de envio son de tres tipos: personal principal, personal secundaria y laboral
+                </p>
+                <hr class="my-4">
+                <a class="btn btn-outline-success" id="botonAltaDirec" role="button" data-toggle="modal" data-target="#direccionModal">NUEVA DIRECCION</a>
+                <div class="modal fade" id="direccionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <div class="modal-header">
+                                    <img src="~/images/formHeaderAltaDireccion.png">
+                                </div>
+                            </div>
+                            <div class="modal-body" style="background-color: #FFFFee;">
+                                <p>Si desea que enviemos los pedidos a una direccion distinta a la personal principal que hizo en el registro, marquela como predeterminada</p>
+                                <form method="post" id="formdirecciones" asp-controller="Cliente" asp-action="AltaDireccion">
+                                    <div class="row">
+                                        <div class="form-group col-2">
+                                            <label for="inputTipoVia" class="form-label"><strong>Tipo de via:</strong></label>
+                                            <select class="form-control" id="inputTipoVia" name="tipoVia">
+                                                <option selected>Calle</option>
+                                                <option value="avenida">Avenida</option>
+                                                <option value="plaza">Plaza</option>
+                                                <option value="carretera/autovia">Carretera/Autovia</option>
+                                                <option value="poligono">Poligono</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label for="inputNombreVia" class="form-label"><strong>*Nombre via:</strong></label>
+                                            <input type="text" class="form-control" id="inputNombreVia" name="nombreVia">
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label for="inputNumVia" class="form-label"><strong>Nº/Km:</strong></label>
+                                            <input type="text" class="form-control" id="inputNumVia" name="numeroVia">
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label for="inputPiso" class="form-label"><strong>Piso:</strong></label>
+                                            <input type="text" class="form-control" id="inputPiso" name="piso">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-2">
+                                            <label for="inputPuerta" class="form-label"><strong>Puerta:</strong></label>
+                                            <input type="text" class="form-control" id="inputPuerta" name="puerta">
+                                        </div>
+                                        <div class="form-group col-4">
+                                            <label for="inputBloque" class="form-label"><strong>Bloque:</strong></label>
+                                            <input type="text" class="form-control" id="inputBloque" name="bloque">
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label for="inputEscalera" class="form-label"><strong>Escalera:</strong></label>
+                                            <input type="text" class="form-control" id="inputEscalera" name="escalera">
+                                        </div>
+                                        <div class="form-group col-3">
+                                            <label for="inputUrbanizacion" class="form-label"><strong>Urbanizacion/Poligono:</strong></label>
+                                            <input type="text" class="form-control" id="inputUrbanizacion" name="urbanizacion">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="inputObsevaciones" class="form-label"><strong>Observaciones(Texto de ayuda para localizar la direccion):</strong></label>
+                                            <input type="text" id="inputObservaciones" class="form-control" name="observaciones">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-4">
+                                            <label for="inputProvincia" class="form-label"><strong>Provincia</strong></label>
+                                            <select id="inputProvincia" name="codpro" class="form-control">
+                                                <option value="0" selected>Elige provincia...</option>
+                                                @{
+                                                    foreach (Provincia provincia in ViewData["ListaProvincias"] as List<Provincia>)
+                                                    {
+                                                        <option value="@provincia.CodProvincia">@provincia.Nombre</option>
+
+                                                    }
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-6">
+                                            <label for="inputLocalidad" class="form-label"><strong>Localidad</strong></label>
+                                            <select id="inputLocalidad" name="codmun" class="form-control" disabled>
+                                                <option value="0" selected>Elige localidad...</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-2">
+                                            <label for="inputCP" class="form-label"><strong>Codigo Postal:</strong></label>
+                                            <input type="text" name="cp" class="form-control" id="inputCP">
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-3">
+                                            <div class="form-check">
+                                                <input type="checkbox" class="form-check-input" id="inputEsPrincipal" name="esprincipal">
+                                                <label class="form-check-label" for="inputEsPrincipal">¿Es direccion de entrega habitual?</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-9"></div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-6"></div>
+                                        <div class="col-6">
+                                            <button type="button" id="botonAceptarDirec" class="btn btn-outline-success" data-dismiss="modal">ACEPTAR</button>
+                                            <button type="button" id="botonCierraModal" class="btn btn-outline-secondary">CANCELAR</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                <button type="button" id="crearDireccion" class="btn btn-primary">Crear Direccion</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../../wwwroot/js/modalAltaDireccion.js"></script>
+<script src="../../wwwroot/js/dropdownMunicipios"></script>
