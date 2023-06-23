@@ -20,7 +20,7 @@ namespace marketplace.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> AddCestaProducto(String ean) 
+        public async Task<IActionResult> AddCestaProducto([FromBody] ItemPedido item) 
         {
             try
             {
@@ -28,11 +28,14 @@ namespace marketplace.Controllers
                 Cliente cliente = this._servicioSession.RecuperaItemSession<Cliente>("datoscliente");
                 List<ItemPedido> articulos = cliente.PedidoActual.ElementosPedido;
 
+                int cantidad = item.CantidadPedido;
+                string ean = item.ProductoPedido.EAN;
+
                 int index = articulos.FindIndex(item => item.ProductoPedido.EAN == ean);
                 bool existeProductoEnPedido = index != -1;
                 if (existeProductoEnPedido)
                 {
-                    articulos[index].CantidadPedido += 1;
+                    articulos[index].CantidadPedido += cantidad;
                 }
                 else
                 {
@@ -42,7 +45,7 @@ namespace marketplace.Controllers
 
                     articulos.Add(new ItemPedido
                     {
-                        CantidadPedido = 1,
+                        CantidadPedido = cantidad,
                         ProductoPedido = productoAAñadir
                     });
                 }

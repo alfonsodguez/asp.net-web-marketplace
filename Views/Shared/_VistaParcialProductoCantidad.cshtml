@@ -9,13 +9,6 @@
         <label id="EAN-@Model.EAN">1</label>
         <button type="button" class="btn btn-success btn-sm" id="btnMas-@Model.EAN">+</button>
     </td>
-    <td><a asp-controller="Pedido" 
-           asp-action="AddCestaProducto"
-           asp-all-route-data="@(new Dictionary<String, String> { { "ean", Model.EAN } })"
-           class="btn btn-btn-light btn-sm" id="btnComprar-@Model.EAN">
-            <img src="~/images/boton_AddCestaProducto.png">
-        </a>
-        Comprar
-    </td>
+    <td><a href="#" class="btn btn-btn-light btn-sm" id="btnComprar-@Model.EAN"><img src="~/images/boton_AddCestaProducto.png"></a>Comprar</td>
 </tr>
 
