@@ -5,19 +5,19 @@ namespace marketplace.Models
 {
     public class Cliente
     {
-        //[Required(ErrorMessage = "* Nombre obligatorio")]
-        //[MaxLength(50, ErrorMessage = "El nombre no puede exceder los 50 caracteres")]
+        [Required(ErrorMessage = "* Nombre obligatorio")]
+        [MaxLength(50, ErrorMessage = "El nombre no puede exceder los 50 caracteres")]
         public String Nombre { get; set; }
 
-        //[Required(ErrorMessage = "* Primer Apellido obligatorio")]
-        //[MaxLength(100, ErrorMessage = "El primer apellido no puede exceder los 100 caracteres")]
+        [Required(ErrorMessage = "* Primer Apellido obligatorio")]
+        [MaxLength(100, ErrorMessage = "El primer apellido no puede exceder los 100 caracteres")]
         public String PrimerApellido { get; set; }
 
-        //[Required(ErrorMessage = "* Segundo Apellido obligatorio")]
-        //[MaxLength(100, ErrorMessage = "El segundo apellido no puede exceder los 100 caracteres")]
+        [Required(ErrorMessage = "* Segundo Apellido obligatorio")]
+        [MaxLength(100, ErrorMessage = "El segundo apellido no puede exceder los 100 caracteres")]
         public String SegundoApellido { get; set; }
 
-        //[Required(ErrorMessage ="* Fecha de nacimiento requerida")]
+        [Required(ErrorMessage ="* Fecha de nacimiento requerida")]
         public DateTime FechaNacimiento { get; set; }
 
         public String IdCliente { get; set; }
@@ -45,14 +45,14 @@ namespace marketplace.Models
 
         public class Credenciales
         {
-            //[Required(ErrorMessage = "* Email obligatorio")]
-            //[RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage ="Formato de Email invalido")]
+            [Required(ErrorMessage = "* Email obligatorio")]
+            [RegularExpression(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", ErrorMessage ="Formato de Email invalido")]
             public String Email { get; set; }
 
-            //[Required(ErrorMessage = "* Password obligatoria")]
-            //[MinLength(4, ErrorMessage = "Se requieren al menos 4 caracteres MIN")]
-            //[MaxLength(20, ErrorMessage = "la Password no debe tener mas de 20 caracteres")]
-            //[RegularExpression("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{4,}$", ErrorMessage = "la password debe tener al menos una letra min, letra MAYS, numero y simbolo")]
+            [Required(ErrorMessage = "* Password obligatoria")]
+            [MinLength(4, ErrorMessage = "Se requieren al menos 4 caracteres MIN")]
+            [MaxLength(20, ErrorMessage = "la Password no debe tener mas de 20 caracteres")]
+            [RegularExpression("^(?=.*[A-Z].*[A-Z])(?=.*[!@#$&*])(?=.*[0-9].*[0-9])(?=.*[a-z].*[a-z].*[a-z]).{4,}$", ErrorMessage = "la password debe tener al menos una letramin, letra MAYS, numero y simbolo")]
             public String Password { get; set; }
 #nullable enable
             public String? HashPasword { get; set; }
@@ -61,11 +61,11 @@ namespace marketplace.Models
 
         public class TipoIdentificacion
         {
-            //[Required(ErrorMessage ="* Tipo Identificacion requerida")]
+            [Required(ErrorMessage ="* Tipo Identificacion requerida")]
             public String TipoId { get; set; } = "NIF";
 
             // TODO: validacion del numero de identif en funcion del tipo
-            //[Required(ErrorMessage ="*Numero de Identificacion requerido")]
+            [Required(ErrorMessage ="*Numero de Identificacion requerido")]
             public String NumeroId { get; set; }
         }
     }
