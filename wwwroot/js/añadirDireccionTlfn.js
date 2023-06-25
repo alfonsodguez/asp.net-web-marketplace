@@ -31,7 +31,7 @@ $('#botonAceptarDirec').click(function (ev) {
     }
 
     $('#botonModificarDirec, #botonBorrarDirec').removeAttr('disabled')
-    modalAltaDir.hide()
+    modalAltaDirecccion.hide()
 })
 
 $('#botonAceptarTlfno').click(function (ev) {
@@ -55,5 +55,5 @@ $('#botonAceptarTlfno').click(function (ev) {
     }
 
     $('#botonModififcarTelef, #botonBorrarTelef').removeAttr('disabled')
-    modalAltaTlf.hide()
+    modalAltaTlfn.hide()
 })
