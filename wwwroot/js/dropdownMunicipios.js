@@ -11,7 +11,7 @@ $('#inputProvincia').change(function (evt) {
         .get(urlMunicipios)
         .done((municipios) => {
             municipios.forEach((municipio) => {
-                $('#inputLocalidad').append('<option value=' + municipio.codMunicipio + 'label=' + codProvincia + '>' + municipio.nombre + '</option>')
+                $('#inputLocalidad').append('<option value=' + municipio.codMunicipio + ' label=' + codProvincia + '>' + municipio.nombre + '</option>')
             })
         })
         .fail((err) => { console.log(err) })
