@@ -46,20 +46,6 @@ namespace marketplace.Models
 
                         if (cursorCliente.Read())
                         {
-                            Cliente cliente = new Cliente
-                            {
-                                IdCliente = idCliente,
-                                Nombre = cursorCliente["Nombre"].ToString(),
-                                PrimerApellido = cursorCliente["PrimerApellido"].ToString(),
-                                SegundoApellido = cursorCliente["SegundoApellildo"].ToString(),
-                                FechaNacimiento = System.Convert.ToDateTime(cursorCliente["FechaNacimiento"]),
-                                TipoIdentificacionCliente = new Cliente.TipoIdentificacion
-                                {
-                                    TipoId = cursorCliente["TipoIdentificacion"].ToString(),
-                                    NumeroId = cursorCliente["NumeroIdentificacion"].ToString()
-                                }
-                            };
-
                             SqlCommand selectDireccion = new SqlCommand("SELECT * FROM dbo.Direcciones WHERE IdCliente=@idcli;", conexionDB);
                             selectDireccion.Parameters.AddWithValue("@idcli", idCliente);
                             SqlDataReader cursorDireccion = await selectDireccion.ExecuteReaderAsync();
@@ -120,6 +106,23 @@ namespace marketplace.Models
                             cliente.HistoricoPedidos = historicoPedidos;
                             cliente.PedidoActual = new Pedido() { IdCliente = idCliente };
 
+                            Cliente cliente = new Cliente
+                            {
+                                IdCliente = idCliente,
+                                Nombre = cursorCliente["Nombre"].ToString(),
+                                PrimerApellido = cursorCliente["PrimerApellido"].ToString(),
+                                SegundoApellido = cursorCliente["SegundoApellildo"].ToString(),
+                                FechaNacimiento = System.Convert.ToDateTime(cursorCliente["FechaNacimiento"]),
+                                TipoIdentificacionCliente = new Cliente.TipoIdentificacion
+                                {
+                                    TipoId = cursorCliente["TipoIdentificacion"].ToString(),
+                                    NumeroId = cursorCliente["NumeroIdentificacion"].ToString()
+                                },
+                                Direcciones = direcciones,
+                                Telefonos = telefonos,
+                                PedidoActual = new Pedido { IdCliente = idCliente }
+                            };
+                            
                             return cliente;
                         }
                     }

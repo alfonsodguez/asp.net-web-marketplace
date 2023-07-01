@@ -11,9 +11,10 @@ $('#botonAceptarDirec').click(function (ev) {
         } else {
             nuevaDireccion[$('#' + attrLabFor).attr('name')] = $('#' + attrLabFor).is(':checked')
         }
-        nuevaDireccion['codProvincia'] = $('#inputLocalidad').attr('value')
-        nuevaDireccion['codMunicipio'] = $('#inputLocalidad').attr('label')
     })
+
+    nuevaDireccion['codProvincia'] = $('#inputLocalidad').attr('value')
+    nuevaDireccion['codMunicipio'] = $('#inputLocalidad').attr('label')
 
     const esOpcionPorDefecto = $('#direcciones > option').first().val() === "No se han definido direcciones"
     if (esOpcionPorDefecto) {
@@ -31,7 +32,7 @@ $('#botonAceptarDirec').click(function (ev) {
     }
 
     $('#botonModificarDirec, #botonBorrarDirec').removeAttr('disabled')
-    modalAltaDir.hide()
+    modalAltaDirecccion.hide()
 })
 
 $('#botonAceptarTlfno').click(function (ev) {
@@ -55,5 +56,5 @@ $('#botonAceptarTlfno').click(function (ev) {
     }
 
     $('#botonModififcarTelef, #botonBorrarTelef').removeAttr('disabled')
-    modalAltaTlf.hide()
+    modalAltaTlfn.hide()
 })
