@@ -1,5 +1,4 @@
 const treeview = $('#treeviewCat')
-// const categorias = JSON.parse('@Json.Serialize(categorias)')
 const separadorCategoria = '-' 
 
 categorias.forEach((categoria) => {
