@@ -1,14 +1,20 @@
 localStorage.clear()
-//estado de los input obligatorios
-let estadoCajas = { 'direcciones': false, 'telefonos': false }
 
-const reValueLabs = /^\*(?!Direccion|Nombre via|Telefono).*/
-const reNombre    = /^[a-zA-Z]{1,50}$/
-const reNIF       = /^[0-9]{8}[a-zA-Z]$/
-const reCIF       = /^[a-zA-Z][0-9]{8}$/
+const reValueLabs = /^\*(?!Direccion|Telefono).*/
+const reNombre = /^[a-zA-Z]{1,50}$/
+const reNIF = /^[0-9]{8}[a-zA-Z]$/
+const reCIF = /^[a-zA-Z][0-9]{8}$/
 const rePasaporte = /^[0-9]{9}$/
-const rePassword  = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,20})/
-const reEmail     = /^.*@.*\.(com|es|uk|it|org)$/
+const rePassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*\+])(?=.{8,20})/
+const reEmail = /^.*@.*\.(com|es|uk|it|org)$/
+const reTlfno = /^[0-9]{9}$/
+
+//estado de los input obligatorios
+let estadoCajas = {}
+
+function setEstadoCajasByDefault(id) {
+    estadoCajas[id] = false
+}
 
 function validarValorCampo(patron, id) {
     const inputId = $('#' + id).val()
@@ -31,100 +37,68 @@ function validarSiCampoCubierto({ value, id }) {
     }
 }
 
-function validarDireccionTlfno() {
-    const numDireccionesStorage = 0
-    const numTelefonosStorage   = 0
+function validarCamposEq(inputCampo, inputConfirmCampo, attrLabFor) {
+    const campoCubierto = estadoCajas[inputCampo] === true
+    const confirmCampoCubierto = estadoCajas[inputConfirmCampo] === true
 
-    for (let a = 0; a < localStorage.length; a++) {
-        if (/^direc-/.test(localStorage.key(a))) {
-            numDireccionesStorage++
-        }
-        if (/^tlfno-/.test(localStorage.key(a))) {
-            numTelefonosStorage++
-        }
+    if (campoCubierto && confirmCampoCubierto) {
+        const campo = $(`#${inputCampo}`).val()
+        const confirmCampo = $(`#${inputConfirmCampo}`).val()
+        estadoCajas[attrLabFor] = campo === confirmCampo
     }
-
-    const esDireccionesOk = $('#direcciones option').length === numDireccionesStorage
-    const esTelefonosOk   = $('#telefonos option').length === numTelefonosStorage
-
-    estadoCajas['direcciones'] = esDireccionesOk
-    estadoCajas['telefonos']   = esTelefonosOk
-}
-
-function setEstadoCajasByDefault(id) {
-    estadoCajas[id] = false
-}
-
-function setEstadoCajaPassword() {
-    const passwordCubierto  = estadoCajas['inputPassword'] === true
-    const repassworCubierto = estadoCajas['inputRePassword'] === true
-
-    if (passwordCubierto && repassworCubierto) {
-        const password   = $('#inputPassword').val()
-        const repassword = $('#inputRePassword').val()
-
-        estadoCajas[attrLabFor] = password === repassword
-    }
-}
-
-function setEstadoCajaEmail() {
-    const email = $('#inputEmail').val()
-    const confirmarEmail = $('#inputConfEmail').val()
-
-    estadoCajas[attrLabFor] = email === confirmarEmail
 }
 
 function checkEstadoCajas() {
-    const cajasOk = Object.keys(estadoCajas).some(input => estadoCajas[input] === false)
+    const cajasKO = Object.keys(estadoCajas).some(input => estadoCajas[input] === false)
 
-    if (cajasOk) {
-        $('#btnEnviarAlta').attr('disabled', 'true')
+    if (!cajasKO) {
+        $('#btnEnviarAlta').removeAttr('disabled')
     }
-    $('#btnEnviarAlta').removeAttr('disabled')
 }
 
-
 $('label')
-.filter((index, lab) => reValueLabs.test($(lab).text()))
-.each((index, lab) => {
-    const attrLabFor = $(lab).attr('for')
-    setEstadoCajasByDefault(attrLabFor)
+    .filter((index, lab) => reValueLabs.test($(lab).text()))
+    .each((index, lab) => {
+        const attrLabFor = $(lab).attr('for')
+        setEstadoCajasByDefault(attrLabFor)
 
-    $('input[id="' + $(lab).attr('for') + '"]').blur(function (ev) {
-        const value = $(ev.target).val()
-        const id    = $(ev.target).attr('id')
-        validarSiCampoCubierto({ value, id })
+        $('input[id="' + $(lab).attr('for') + '"]').blur(function (ev) {
+            const value = $(ev.target).val()
+            const id = $(ev.target).attr('id')
+            validarSiCampoCubierto({ value, id })
 
-        switch (attrLabFor) {
-            case "inputNombre":
-                validarValorCampo(reNombre, attrLabFor)
-                break
-            case "inputIdentif":
-                switch ($('#dropdownTipoIdentif').val()) {
-                    case 'NIF':
-                        validarValorCampo(reNIF, attrLabFor)
-                        break
-                    case 'CIF':
-                        validarValorCampo(reCIF, attrLabFor)
-                        break
-                    case 'Pasaporte':
-                        validarValorCampo(rePasaporte, attrLabFor)
-                        break
-                }
-                break
-            case "inputPassword":
-            case "inputRePassword":
-                validarValorCampo(rePassword, attrLabFor)
-                setEstadoCajaPassword()
-                break
-            case "inputEmail":
-            case "inputConfEmail":
-                validarValorCampo(reEmail, attrLabFor)
-                setEstadoCajaEmail()
-                break
-        }
-
-        validarDireccionTlfno()
-        checkEstadoCajas()
+            switch (attrLabFor) {
+                case "inputNombre":
+                case "inputNombreVia":
+                    validarValorCampo(reNombre, attrLabFor)
+                    break
+                case "inputIdentif":
+                    switch ($('#dropdownTipoIdentif').val()) {
+                        case 'NIF':
+                            validarValorCampo(reNIF, attrLabFor)
+                            break
+                        case 'CIF':
+                            validarValorCampo(reCIF, attrLabFor)
+                            break
+                        case 'Pasaporte':
+                            validarValorCampo(rePasaporte, attrLabFor)
+                            break
+                    }
+                    break
+                case "inputPassword":
+                case "inputRePassword":
+                    validarValorCampo(rePassword, attrLabFor)
+                    validarCamposEq(attrLabFor)
+                    break
+                case "inputEmail":
+                case "inputConfEmail":
+                    validarValorCampo(reEmail, attrLabFor)
+                    validarCamposEq(attrLabFor)
+                    break
+                case "inputTelefono":
+                    validarValorCampo(reTlfno, attrLabFor)
+                    break
+            }
+            checkEstadoCajas()
+        })
     })
-})
