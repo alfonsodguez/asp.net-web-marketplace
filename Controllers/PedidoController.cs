@@ -19,20 +19,26 @@ namespace marketplace.Controllers
             this._servicioSession = servicioSessionInyect;
         }
 
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> AddCestaProducto([FromBody] ItemPedido item) 
         {
             try
             {
                 // recupero session del cliente
                 Cliente cliente = this._servicioSession.RecuperaItemSession<Cliente>("datoscliente");
-                List<ItemPedido> articulos = cliente.PedidoActual.ElementosPedido;
+                if (cliente.IdCliente == null)
+                {
+                    return RedirectToAction("Login", "Cliente");
+                }
+
 
                 int cantidad = item.CantidadPedido;
                 string ean = item.ProductoPedido.EAN;
-
+                
+                List<ItemPedido> articulos = cliente.PedidoActual.ElementosPedido;
                 int index = articulos.FindIndex(item => item.ProductoPedido.EAN == ean);
                 bool existeProductoEnPedido = index != -1;
+
                 if (existeProductoEnPedido)
                 {
                     articulos[index].CantidadPedido += cantidad;
@@ -56,7 +62,7 @@ namespace marketplace.Controllers
             }
             catch (Exception ex)
             {
-                return Ok(new { mensaje = "error en metodo AddCestaProducto" });
+                return Ok(new { mensaje = "Error en método AddCestaProducto" });
             }
         }
 
@@ -88,12 +94,13 @@ namespace marketplace.Controllers
         {
             Cliente cliente = this._servicioSession.RecuperaItemSession<Cliente>("datoscliente");
 
-            cliente
+            ItemPedido item = cliente
                 .PedidoActual
                 .ElementosPedido
                 .Where<ItemPedido>(item => item.ProductoPedido.EAN == ean)
-                .Single<ItemPedido>()
-                .CantidadPedido += 1;
+                .Single<ItemPedido>();
+
+            item.CantidadPedido += 1;
 
             this._servicioSession.AddItemSession<Cliente>("datoscliente", cliente);
 
@@ -117,15 +124,25 @@ namespace marketplace.Controllers
         public async Task<IActionResult> FinalizarPedido()
         {
             Cliente cliente = this._servicioSession.RecuperaItemSession<Cliente>("datoscliente");
-            cliente.PedidoActual.IdCliente = cliente.IdCliente;
-
-            bool pedidoAlmacenadoOk = await this._accesoBD.GuardarPedido(cliente.PedidoActual);
-            if (pedidoAlmacenadoOk)
+            if (cliente.IdCliente == null)
             {
-                return View(cliente);
+                return RedirectToAction("Login", "Cliente");
             }
 
-            TempData["ErrorServer"] = "Error interno del server al procesar pedido, intentelo de nuevo mas tarde";
+            if (cliente.PedidoActual.ElementosPedido.Count == 0) {
+                return RedirectToAction("Productos", "Tienda");
+            }
+
+            cliente.PedidoActual.IdCliente = cliente.IdCliente;
+            bool pedidoAlmacenadoOk = await this._accesoBD.GuardarPedido(cliente.PedidoActual);
+
+            if (pedidoAlmacenadoOk)
+            {
+                List<ItemPedido> articulos = cliente.PedidoActual.ElementosPedido;
+                return View(articulos);
+            }
+
+            TempData["ErrorServer"] = "Error interno del servidor al procesar pedido";
             return RedirectToAction("Productos", "Tienda");
         }
 
@@ -135,13 +152,16 @@ namespace marketplace.Controllers
             try
             {
                 Cliente cliente = this._servicioSession.RecuperaItemSession<Cliente>("datoscliente");
+                if (cliente.IdCliente == null)
+                {
+                    return RedirectToAction("Login", "Cliente");
+                }
 
                 TempData["ErrorServer"] = "";
                 return View(cliente.PedidoActual);
             }
             catch (Exception)
             {
-                //si no tiene sesion lo redireccionamos a la tienda
                 return RedirectToAction("Productos", "Tienda");
             }
         }

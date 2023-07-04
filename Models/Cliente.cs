@@ -37,8 +37,7 @@ namespace marketplace.Models
             this.Telefonos = new Dictionary<String, Telefono>();
             this.PedidoActual = new Pedido
             {
-                Fecha = DateTime.Now,
-                Estado = "en curso"
+                Estado = "pediente"
             };
             this.HistoricoPedidos = new Dictionary<String, Pedido>();
         }

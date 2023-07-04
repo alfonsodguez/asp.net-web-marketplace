@@ -65,7 +65,7 @@ namespace marketplace.Controllers
                 }
             }
             ModelState.AddModelError("", "Error de procesado de datos en servidor...");
-            //ViewData["mensajeError"] = "Error de procesado de datos en servidor, intentelo de nuevo mas tarde...";
+            ViewData["mensajeError"] = "Error de procesado de datos en servidor, intentelo de nuevo mas tarde...";
             ViewData["ListaProvincias"] = await this._accesoBD.DevolverProvincias();
             return View(cliente);
         }
@@ -73,8 +73,9 @@ namespace marketplace.Controllers
         [HttpGet]
         public async Task<IActionResult> MisDirecciones()
         {
-            ViewData["ListaProvincias"] = await this._accesoBD.DevolverProvincias();
-            return View(new Dictionary<String, Direccion>());
+            // TODO
+            Dictionary<String, Direccion> direcciones = new Dictionary<string, Direccion>();
+            return View(direcciones);
         }
     }
 }
