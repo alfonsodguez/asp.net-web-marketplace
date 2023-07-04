@@ -13,9 +13,9 @@ namespace marketplace.Controllers
     {
         private readonly IDBAccess _accesoBD;
 
-        public TiendaController(IDBAccess servicioBDinyectado)
+        public TiendaController(IDBAccess servicioBDInyect)
         {
-            this._accesoBD = servicioBDinyectado;
+            this._accesoBD = servicioBDInyect;
         }
 
 
