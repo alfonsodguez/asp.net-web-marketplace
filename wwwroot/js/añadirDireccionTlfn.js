@@ -13,8 +13,8 @@ $('#botonAceptarDirec').click(function (ev) {
         }
     })
 
-    nuevaDireccion['codProvincia'] = $('#inputLocalidad').attr('value')
-    nuevaDireccion['codMunicipio'] = $('#inputLocalidad').attr('label')
+    nuevaDireccion['codProvincia'] = $('#inputLocalidad option:selected').attr('value')
+    nuevaDireccion['codMunicipio'] = $('#inputLocalidad option:selected').attr('label')
 
     const esOpcionPorDefecto = $('#direcciones > option').first().val() === "No se han definido direcciones"
     if (esOpcionPorDefecto) {
@@ -56,5 +56,5 @@ $('#botonAceptarTlfno').click(function (ev) {
     }
 
     $('#botonModififcarTelef, #botonBorrarTelef').removeAttr('disabled')
-    modalAltaTlfn.hide()
+    modalAltaTlfno.hide()
 })

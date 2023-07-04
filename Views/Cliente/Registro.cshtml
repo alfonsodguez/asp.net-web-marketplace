@@ -81,7 +81,7 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="inputRePassword"><strong>*Confirmacion de contraseña:</strong></label>
-                                <input type="password" class="form-control" id="inputRePassword">
+                                <input type="password" class="form-control" id="inputRePassword" name="recontraseña">
                             </div>
                             <div class="form-group col-md-4">
                             </div>
@@ -150,26 +150,26 @@
                                                         </div>
                                                         <div class="row">
                                                             <div class="form-group col-12">
-                                                                <label for="inputObsevaciones" class="form-label"><strong>Observaciones(Texto de ayuda para localizar la direccion):</strong></label>
+                                                                <label for="inputObservaciones" class="form-label"><strong>Observaciones(Texto de ayuda para localizar la direccion):</strong></label>
                                                                 <input type="text" id="inputObservaciones" class="form-control" name="observaciones">
                                                             </div>
                                                         </div>
                                                         <div class="row">
                                                             <div class="form-group col-4">
                                                                 <label for="inputProvincia" class="form-label"><strong>Provincia</strong></label>
-                                                                <select id="inputProvincia" name="codpro" class="form-control">
+                                                                <select id="inputProvincia" name="codProvincia" class="form-control">
                                                                     <option value="0" selected>Elige provincia...</option>
                                                                     @{
                                                                         foreach (Provincia provincia in ViewData["ListaProvincias"] as List<Provincia>)
                                                                         {
-                                                                            <option value="@provincia.CodProvincia">@provincia.Nombre</option>
+                                                                        <option value="@provincia.CodProvincia">@provincia.Nombre</option>
                                                                         }
                                                                     }
                                                                 </select>
                                                             </div>
                                                             <div class="form-group col-6">
                                                                 <label for="inputLocalidad" class="form-label"><strong>Localidad</strong></label>
-                                                                <select id="inputLocalidad" name="codmun" class="form-control" disabled>
+                                                                <select id="inputLocalidad" name="codMunicipio" class="form-control" disabled>
                                                                     <option value="0" selected>Elige localidad...</option>
                                                                 </select>
                                                             </div>
@@ -181,7 +181,7 @@
                                                         <div class="row">
                                                             <div class="form-group col-3">
                                                                 <div class="form-check">
-                                                                    <input type="checkbox" class="form-check-input" id="inputEsPrincipal" name="esprincipal">
+                                                                    <input type="checkbox" class="form-check-input" id="inputEsPrincipal" name="esPrincipal">
                                                                     <label class="form-check-label" for="inputEsPrincipal">¿Es direccion de entrega habitual?</label>
                                                                 </div>
                                                             </div>
@@ -191,7 +191,7 @@
                                                             <div class="col-6"></div>
                                                             <div class="col-6">
                                                                 <button type="button" id="botonAceptarDirec" class="btn btn-outline-success" data-dismiss="modal">ACEPTAR</button>
-                                                                <button type="button" id="botonCierraModal" class="btn btn-outline-secondary">CANCELAR</button>
+                                                                <button type="button" id="botonCierraModalDirec" class="btn btn-outline-secondary">CANCELAR</button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -214,9 +214,9 @@
                                     </select>
                                 </div>
                                 <div class="form-group col-md-6">
-                                    <button type="button" id="botonAltaTelef" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="exampleModalTelef">ALTA</button>
+                                    <button type="button" id="botonAltaTlfno" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="exampleModalTelef">ALTA</button>
                                     <!-- ========================== Formulario modal alta telefonos ========================== -->
-                                    <div class="modal fade" id="formAltaTelef" tabindex="-1" role="dialog" aria-labelledby="exampleModalTelef" aria-hidden="true">
+                                    <div class="modal fade" id="formAltaTlfno" tabindex="-1" role="dialog" aria-labelledby="exampleModalTelef" aria-hidden="true">
                                         <div class="modal-dialog modal-lg" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-header">
@@ -227,7 +227,7 @@
                                                         <div class="row">
 
                                                             <div class="form-group col-6">
-                                                                <label for="inputTelefono" class="form-label"><strong>*Telefono:</strong></label>
+                                                                <label for="inputTelefono" class="form-label"><strong>*Número tlfno:</strong></label>
                                                                 <input type="text" class="form-control" id="inputTelefono" name="numeroTlfno">
                                                             </div>
                                                             <div class="col-6"></div>
@@ -236,7 +236,7 @@
                                                             <div class="form-group col-3">
                                                                 <div class="form-check">
                                                                     <input type="checkbox" class="form-check-input" id="esTlfnoprincipal" name="esTlfnoprincipal">
-                                                                    <label class="form-check-label" for="esprincipal">¿Es telefono habitual?</label>
+                                                                    <label class="form-check-label" for="esTlfnoprincipal">¿Es telefono habitual?</label>
                                                                 </div>
                                                             </div>
                                                             <div class="col-9"></div>
@@ -244,11 +244,11 @@
                                                         <div class="row">
                                                             <div class="col-6"></div>
                                                             <div class="col-6">
-                                                                <button type="button" class="btn btn-outline-success" data-dismiss="modal" id="botonAceptarTlfno">ACEPTAR</button>
+                                                                <button type="button" id="botonAceptarTlfno" class="btn btn-outline-success" data-dismiss="modal">ACEPTAR</button>
                                                                 <button type="button" id="botonCierraModalTlfno" class="btn btn-outline-secondary">CANCELAR</button>
                                                             </div>
                                                         </div>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                                 <div class="modal-footer">
                                                 </div>
@@ -294,8 +294,8 @@
     </div>
     <script>
         // variables globales
-        const modalAltaDirecccion = new bootstrap.Modal(document.getElementById('formAltaDir'))
-        const modalAltaTlfn = new bootstrap.Modal(document.getElementById('formAltaTlfno'))
+        const modalAltaDirecccion = new bootstrap.Modal(document.getElementById('formAltaDirec'));
+        const modalAltaTlfno = new bootstrap.Modal(document.getElementById('formAltaTlfno'));
         let esDireccionModif = false
         let esTlfnModif = false
         let posDireccionModif = 0

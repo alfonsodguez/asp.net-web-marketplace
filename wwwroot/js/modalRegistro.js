@@ -1,5 +1,5 @@
-$('#botonAltaDirec').click(function () { modalAltaDireccion.show(); });
-$('#botonCierraModal').click(function () { modalAltaDireccion.hide(); });
+$('#botonAltaDirec').click(function () { modalAltaDirecccion.show(); esDireccionModif = false });
+$('#botonCierraModalDirec').click(function () { modalAltaDirecccion.hide(); });
 
-$('#botonAltaTelef').click(function () { modalAltaTlf.show(); });
+$('#botonAltaTlfno').click(function () { modalAltaTlf.show(); esTlfnModif = false });
 $('#botonCierraModalTlfno').click(function () { modalAltaTlf.hide(); });
