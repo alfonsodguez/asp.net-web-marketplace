@@ -1,0 +1,24 @@
+﻿<div class="container" style="background-color: gray;">
+    <div class="row">
+        <table class="table">
+            <thead style="background-color: orange;">
+                <tr><td><strong>DATOS DEL TICKET</strong></td></tr>
+                <tr>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Detalle del producto</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Precio €</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (List<ItemPedido> itemPedido in Model)
+                {
+                    <partial name="_VistaParcialFinalizarPedido" model="itemPedido" />
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<p><strong>Subtotal: </strong>this.subtotal</p>
+<p><strong>TARIFA DE SERVICIO: </strong>this.gastosEnvio</p>
+<p><strong>TOTAL: </strong>this.total</p>
