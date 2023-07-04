@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -65,13 +66,13 @@ namespace marketplace.Models
                                     Escalera = fila["Escalera"].ToString(),
                                     Urbanizacion = fila["Urbanizacion"].ToString(),
                                     Obseraciones = fila["Observaciones"].ToString(),
-                                    Provincia = new Provincia { CodProvincia = System.Convert.ToInt32(fila["CodPro"]) },
-                                    Municipio = new Municipio { CodProvincia = System.Convert.ToInt32(fila["CodPro"]), CodMunicipio =System.Convert.ToInt32(fila["CodMun"]) },
+                                    Provincia = new Provincia { CodProvincia = System.Convert.ToInt32(fila["CodProvincia"]) },
+                                    Municipio = new Municipio { CodProvincia = System.Convert.ToInt32(fila["CodProvincia"]), CodMunicipio = System.Convert.ToInt32(fila["CodMunicipio"]) },
                                     EsPrincipal = System.Convert.ToBoolean(cursorDireccion["EsPrincipal"])
                                 })
                                 .ToDictionary(key => key.IdDireccion);                            
 
-                            SqlCommand selectTlfno = new SqlCommand("SELECT * FROM dbo.TelefonosContacto WHERE IdCliente=@idcli;", conexionDB);
+                            SqlCommand selectTlfno = new SqlCommand("SELECT * FROM dbo.Telefonos WHERE IdCliente=@idcli;", conexionDB);
                             selectTlfno.Parameters.AddWithValue("@idcli", idCliente);
                             SqlDataReader cursorTlfno = await selectTlfno.ExecuteReaderAsync();
 
@@ -81,7 +82,7 @@ namespace marketplace.Models
                                 {
                                     IdCliente = fila["IdCliente"].ToString(),
                                     IdTelefono = fila["IdTelefono"].ToString(),
-                                    Numero = fila["NumeroTelefono"].ToString(),
+                                    Numero = fila["Numero"].ToString(),
                                     EsPrincipal = System.Convert.ToBoolean(fila["EsPrincipal"])
                                 })
                                 .ToDictionary(key => key.IdTelefono);
@@ -96,15 +97,10 @@ namespace marketplace.Models
                                 {
                                     IdCliente = fila["IdCliente"].ToString(),
                                     IdPedido = fila["IdPedido"].ToString(),
-                                    Fecha = System.Convert.ToDateTime(fila["FechaPedido"]),
-                                    Estado = fila["EstadoPedido"].ToString()
+                                    Fecha = System.Convert.ToDateTime(fila["Fecha"]),
+                                    Estado = fila["Estado"].ToString()
                                 })
                                 .ToDictionary(key => key.IdPedido);
-
-                            cliente.Direcciones = direcciones;
-                            cliente.Telefonos = telefonos;
-                            cliente.HistoricoPedidos = historicoPedidos;
-                            cliente.PedidoActual = new Pedido() { IdCliente = idCliente };
 
                             Cliente cliente = new Cliente
                             {
@@ -120,9 +116,10 @@ namespace marketplace.Models
                                 },
                                 Direcciones = direcciones,
                                 Telefonos = telefonos,
-                                PedidoActual = new Pedido { IdCliente = idCliente }
+                                HistoricoPedidos = historicoPedidos,
+                                PedidoActual = new Pedido() { IdCliente = idCliente }
                             };
-                            
+
                             return cliente;
                         }
                     }
@@ -206,7 +203,7 @@ namespace marketplace.Models
                         DateTime now = DateTime.Now;
                         String idTelefono = now + separador + idCliente;
 
-                        SqlCommand insertarTelefono = new SqlCommand("INSERT INTO dbo.TelefonosContacto VALUES(@idCli, @num, @esppal, @idTlfn);", conexionDB);
+                        SqlCommand insertarTelefono = new SqlCommand("INSERT INTO dbo.Telefonos VALUES(@idCli, @num, @esppal, @idTlfn);", conexionDB);
                         insertarTelefono.Parameters.AddWithValue("@idCli", idCliente);
                         insertarTelefono.Parameters.AddWithValue("@idTlfn", idTelefono);
                         insertarTelefono.Parameters.AddWithValue("@num", telefono.Value.Numero);
@@ -238,7 +235,7 @@ namespace marketplace.Models
 
                 SqlCommand selectMunicipios = new SqlCommand();
                 selectMunicipios.Connection = conexionBD;
-                selectMunicipios.CommandText = "SELECT * FROM dbo.Municipios WHERE CodPro=@codpro ORDER BY NombreMunicipio ASC;";
+                selectMunicipios.CommandText = "SELECT * FROM dbo.Municipios WHERE CodProvincia=@codpro ORDER BY Nombre ASC;";
                 selectMunicipios.Parameters.AddWithValue("@codpro", codProvincia);
 
                 SqlDataReader cursorMunicipios = await selectMunicipios.ExecuteReaderAsync();
@@ -248,8 +245,8 @@ namespace marketplace.Models
                     .Select((IDataRecord fila) => new Municipio
                     {
                         CodProvincia = codProvincia,
-                        CodMunicipio = System.Convert.ToInt16(fila["CodMun"]),
-                        Nombre = fila["NombreMunicipio"].ToString()
+                        CodMunicipio = System.Convert.ToInt16(fila["CodMunicipio"]),
+                        Nombre = fila["Nombre"].ToString()
                     })
                     .ToList<Municipio>();
             }
@@ -268,7 +265,7 @@ namespace marketplace.Models
 
                 SqlCommand selectProvincias = new SqlCommand();
                 selectProvincias.Connection = conexionDb;
-                selectProvincias.CommandText = "SELECT * FROM dbo.Provincias ORDER BY NombreProvincia asc";
+                selectProvincias.CommandText = "SELECT * FROM dbo.Provincias ORDER BY Nombre asc";
 
                 SqlDataReader cursorProvincias = await selectProvincias.ExecuteReaderAsync();
 
@@ -276,8 +273,8 @@ namespace marketplace.Models
                     .Cast<IDataRecord>()
                     .Select((IDataRecord fila) => new Provincia
                     {
-                        CodProvincia = System.Convert.ToInt16(fila["CodPro"]),
-                        Nombre = fila["NombreProvincia"].ToString()
+                        CodProvincia = System.Convert.ToInt16(fila["CodProvincia"]),
+                        Nombre = fila["Nombre"].ToString()
                     })
                     .ToList<Provincia>();
             }
@@ -350,8 +347,8 @@ namespace marketplace.Models
                     .Cast<IDataRecord>()
                     .Select((IDataRecord fila) => new Categoria
                     {
-                        Nombre = fila["NombreCategoria"].ToString(),
-                        Path = fila["PathCategoria"].ToString()
+                        Nombre = fila["Nombre"].ToString(),
+                        Path = fila["Path"].ToString()
                     })
                     .ToList<Categoria>();
             }
@@ -364,7 +361,8 @@ namespace marketplace.Models
         public async Task<bool> GuardarPedido(Pedido pedido)
         {
             String idCliente = pedido.IdCliente;
-            DateTime now = DateTime.Now;
+            String estado = "en curso";
+            SqlDateTime now = DateTime.Now;
             String separador = ":";
             String idPedido = now + separador + idCliente;
 
@@ -376,8 +374,8 @@ namespace marketplace.Models
                 SqlCommand insertPedido = new SqlCommand(@"INSERT INTO dbo.Pedidos VALUES(@idpedido, @idcli, @fecha, @estado, @subtotal, @gastosdeenvio, @total);", conexionBD);
                 insertPedido.Parameters.AddWithValue("@idpedido", idPedido);
                 insertPedido.Parameters.AddWithValue("@idcli", pedido.IdCliente);
-                insertPedido.Parameters.AddWithValue("@fecha", pedido.Fecha);
-                insertPedido.Parameters.AddWithValue("@estado", pedido.Estado);
+                insertPedido.Parameters.AddWithValue("@fecha", now);
+                insertPedido.Parameters.AddWithValue("@estado", estado);
                 insertPedido.Parameters.AddWithValue("@gastosdeenvio", pedido.GastosEnvio);
                 insertPedido.Parameters.AddWithValue("@subtotal", pedido.SubTotal);
                 insertPedido.Parameters.AddWithValue("@total", pedido.Total);
@@ -390,7 +388,6 @@ namespace marketplace.Models
                     articulos.ForEach(async (ItemPedido item) =>
                     {
                         SqlCommand insertItemPedido = new SqlCommand(@"INSERT INTO dbo.ItemsPedido VALUES(@idpedido, @ean, @cantidad);", conexionBD);
-                        insertItemPedido.CommandType = CommandType.StoredProcedure;
                         insertItemPedido.Parameters.AddWithValue("@idpedido", idPedido);
                         insertItemPedido.Parameters.AddWithValue("@ean", item.ProductoPedido.EAN);
                         insertItemPedido.Parameters.AddWithValue("@Cantidad", item.CantidadPedido);
