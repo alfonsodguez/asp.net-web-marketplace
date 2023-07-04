@@ -1,5 +1,5 @@
 const treeview = $('#treeviewCat')
-const separadorCategoria = '-' 
+const separadorCategoria = '-'
 
 categorias.forEach((categoria) => {
     const paths = categoria.path.split(separadorCategoria)
@@ -14,12 +14,14 @@ function despliegaSubcategorias() {
     const subCategorias = categorias.filter(categoria => categoria.path.search(reCategoria) != -1)
 
     if (subCategorias.length > 0) {
-        let tags = '<ul class="nested">'
+        let initialTag = '<ul class="nested">'
 
-        subCategorias.forEach((subcategoria) => {
-            tags += `<li id="${subcategoria.path}"><span class="caret">${subcategoria.nombre}</span></li>`
-        })
-        tags += '</ul>'
+        const tags = subCategorias.reduce((acc, subCategoria, index) => {
+            if (subCategorias.length === index++) {
+                return acc + '</ul>'
+            }
+            return acc + `<li id="${subCategoria.path}"><span class="caret">${subCategoria.nombre}</span></li>`
+        }, initialTag)
 
         $(this).parent().append(tags)
         $(".caret").click(despliegaSubcategorias)
